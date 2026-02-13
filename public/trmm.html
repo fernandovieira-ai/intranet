@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tactical RMM - Intranet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/trmm.css" />
+  </head>
+  <body>
+    <!-- Header Global - No topo de tudo -->
+    <header class="header">
+      <div class="header-content">
+        <div class="user-profile">
+          <img
+            id="userPhoto"
+            src="/images/default-avatar.svg"
+            alt="Foto de perfil"
+            class="user-photo-large"
+          />
+          <div class="user-details">
+            <span class="user-greeting">Olá,</span>
+            <span id="userName" class="user-name">Usuário</span>
+          </div>
+        </div>
+        <button id="btnLogout" class="btn-logout">
+          <span class="logout-icon">🚪</span>
+          <span class="logout-text">Sair</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Botão Toggle Menu Mobile -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+      ☰ Menu
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Intranet</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="icon">🏠</span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="plantao.html">
+            <span class="icon">📅</span>
+            <span class="text">Plantão</span>
+          </a>
+        </li>
+        <li>
+          <a href="tomticket.html">
+            <span class="icon">🎫</span>
+            <span class="text">TomTicket</span>
+          </a>
+        </li>
+        <li>
+          <a href="dtef.html">
+            <span class="icon">🔐</span>
+            <span class="text">Senhas DTEF</span>
+          </a>
+        </li>
+        <li>
+          <a href="trmm.html" class="active">
+            <span class="icon">🖥️</span>
+            <span class="text">Tactical RMM</span>
+          </a>
+        </li>
+        <li>
+          <a href="anydesk.html">
+            <span class="icon">💻</span>
+            <span class="text">AnyDesk</span>
+          </a>
+        </li>
+        <li>
+          <a href="contratos.html">
+            <span class="icon">📋</span>
+            <span class="text">Contratos</span>
+          </a>
+        </li>
+        <li>
+          <a href="restrito.html">
+            <span class="icon">🔒</span>
+            <span class="text">Dados Restritos</span>
+          </a>
+        </li>
+        <li>
+          <a href="faq-erros.html">
+            <span class="icon">❓</span>
+            <span class="text">FAQ de Erros</span>
+          </a>
+        </li>
+        <li id="menuUsuarios">
+          <a href="usuarios.html">
+            <span class="icon">👥</span>
+            <span class="text">Usuários</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay para fechar sidebar no mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+      <main class="main-content">
+        <div class="page-header">
+          <h2 class="page-title">🖥️ Tactical RMM</h2>
+          <div class="header-actions">
+            <a href="dashboard.html" class="btn-back">
+              <span class="btn-back-icon">←</span>
+              Voltar
+            </a>
+            <button
+              id="btnAcessarTRMM"
+              class="btn-primary"
+              onclick="acessarTRMM()"
+              title="Acessar Tactical RMM"
+            >
+              🌐 Acessar TRMM
+            </button>
+          </div>
+        </div>
+        <!-- Credenciais do Usuário -->
+        <div
+          id="credenciaisCard"
+          class="credenciais-card"
+          style="display: none"
+        >
+          <div id="mensagemCredenciais" class="mensagem-credenciais"></div>
+          <h3>🔑 Suas Credenciais Tactical RMM</h3>
+          <div class="credenciais-info">
+            <div class="credencial-item">
+              <label>Usuário:</label>
+              <span id="credUsuario">-</span>
+              <button
+                id="btnCopiarUsuario"
+                class="btn-copiar-cred"
+                title="Copiar usuário"
+              >
+                📋
+              </button>
+            </div>
+            <div class="credencial-item">
+              <label>Senha:</label>
+              <span id="credSenha">********</span>
+              <button
+                id="btnToggleSenha"
+                class="btn-toggle-senha"
+                title="Mostrar/Ocultar senha"
+              >
+                👁️
+              </button>
+              <button
+                id="btnCopiarSenha"
+                class="btn-copiar-cred"
+                title="Copiar senha"
+              >
+                📋
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de pesquisa e ações admin -->
+        <div class="toolbar">
+          <h3 class="toolbar-title">Clientes Cadastrados</h3>
+          <div class="toolbar-actions">
+            <input
+              type="text"
+              id="inputPesquisa"
+              placeholder="🔍 Buscar cliente..."
+              class="input-pesquisa"
+            />
+            <button
+              id="btnLimparPesquisa"
+              class="btn-icon-pesquisa"
+              style="display: none"
+              title="Limpar pesquisa"
+            >
+              ✖️
+            </button>
+            <button
+              id="btnImportar"
+              class="btn-secondary"
+              style="display: none"
+              title="Importar clientes da API"
+            >
+              📥 Importar Clientes
+            </button>
+            <button
+              id="btnNovoCliente"
+              class="btn-primary"
+              style="display: none"
+              title="Cadastrar novo cliente"
+            >
+              ➕ Novo Cliente
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista de clientes -->
+        <div class="clientes-container">
+          <div id="listaClientes" class="clientes-lista">
+            <!-- Clientes serão carregados aqui -->
+          </div>
+          <div id="mensagemVazia" class="mensagem-vazia" style="display: none">
+            <p>📭 Nenhum cliente cadastrado</p>
+          </div>
+          <div id="loading" class="loading" style="display: none">
+            <p>⏳ Carregando...</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal para criar/editar cliente -->
+    <div id="modalCliente" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="tituloModal">Novo Cliente TRMM</h2>
+          <button class="modal-close" id="btnFecharModal">×</button>
+        </div>
+        <form id="formCliente" class="modal-body">
+          <div class="form-group">
+            <label for="inputNome">Nome do Cliente *</label>
+            <input
+              type="text"
+              id="inputNome"
+              placeholder="Ex: Empresa ABC"
+              required
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="inputApiUrl">URL da API *</label>
+            <input
+              type="url"
+              id="inputApiUrl"
+              placeholder="https://api.example.com"
+              required
+              autocomplete="off"
+            />
+            <small>URL base da API do Tactical RMM</small>
+          </div>
+
+          <div class="form-group">
+            <label for="inputApiKey">API Key *</label>
+            <div class="senha-input-group">
+              <input
+                type="password"
+                id="inputApiKey"
+                placeholder="Digite a API Key"
+                required
+                autocomplete="new-password"
+              />
+              <button
+                type="button"
+                id="btnToggleApiKey"
+                class="btn-toggle-senha"
+                title="Mostrar/Ocultar"
+              >
+                👁️
+              </button>
+            </div>
+            <small>API Key com permissões de leitura</small>
+          </div>
+
+          <div class="form-group">
+            <label for="inputObservacao">Observação</label>
+            <textarea
+              id="inputObservacao"
+              placeholder="Informações adicionais..."
+              rows="3"
+              autocomplete="off"
+            ></textarea>
+          </div>
+
+          <div class="form-group" id="groupAtivo" style="display: none">
+            <label class="checkbox-label">
+              <input type="checkbox" id="inputAtivo" checked />
+              <span>Cliente ativo</span>
+            </label>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="btnCancelar">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary" id="btnSalvar">
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de importação -->
+    <div id="modalImportar" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>📥 Importar Clientes</h2>
+          <button class="modal-close" id="btnFecharImportar">×</button>
+        </div>
+        <form id="formImportar">
+          <div class="modal-body">
+            <p class="info-text">
+              Digite a URL e API Key do Tactical RMM para importar
+              automaticamente todos os clientes.
+            </p>
+
+            <div class="form-group">
+              <label for="importarApiUrl">URL da API *</label>
+              <input
+                type="url"
+                id="importarApiUrl"
+                placeholder="https://api.example.com"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="importarApiKey">API Key *</label>
+              <div class="input-password">
+                <input
+                  type="password"
+                  id="importarApiKey"
+                  placeholder="Sua API Key"
+                  required
+                />
+                <button
+                  type="button"
+                  class="btn-toggle-password"
+                  id="btnToggleImportKey"
+                >
+                  👁️
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn-secondary"
+              id="btnCancelarImportar"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">📥 Importar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de agents do cliente -->
+    <div id="modalAgents" class="modal" style="display: none">
+      <div class="modal-content modal-large">
+        <div class="modal-header">
+          <h2 id="tituloModalAgents">Agents - Cliente</h2>
+          <button class="modal-close" id="btnFecharAgents">×</button>
+        </div>
+        <div class="modal-body">
+          <div id="agentsLoading" class="loading" style="display: none">
+            <p>⏳ Carregando agents...</p>
+          </div>
+          <div id="agentsContainer">
+            <!-- Agents serão carregados aqui -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de confirmação de exclusão -->
+    <div id="modalConfirmacao" class="modal" style="display: none">
+      <div class="modal-content modal-small">
+        <div class="modal-header">
+          <h2>⚠️ Confirmar Exclusão</h2>
+          <button class="modal-close" id="btnFecharConfirmacao">×</button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir este cliente?</p>
+          <p class="confirmacao-info">
+            <strong id="confirmacaoNome"></strong>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="btnCancelarExclusao">
+            Cancelar
+          </button>
+          <button class="btn-danger" id="btnConfirmarExclusao">Excluir</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/trmm.js"></script>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!-- Conteúdo do Dashboard (Home) -->
+<div class="welcome-section">
+  <h2>Bem-vindo ao Dashboard</h2>
+  <p>Você está logado no sistema!</p>
+</div>
+
+<!-- Senha Diária LZT -->
+<div class="senha-diaria-container">
+  <div id="mensagemSenhaLZT" class="mensagem-senha-lzt"></div>
+  <div class="senha-linha">
+    <div class="senha-info">
+      <h3>🔐 Senha LZT de Hoje</h3>
+      <div class="senha-valor-wrapper">
+        <div class="senha-valor-container">
+          <div class="senha-valor" id="senhaHoje">Carregando...</div>
+          <button
+            class="btn-copiar-senha"
+            id="btnCopiarSenha"
+            title="Copiar senha"
+          >
+            📋
+          </button>
+        </div>
+        <small id="dataHoje">-</small>
+      </div>
+    </div>
+    <button class="btn-ver-proximas" id="btnVerProximasSenhas">
+      Ver próximos 7 dias
+    </button>
+  </div>
+</div>
+
+<!-- Grid: Informativos -->
+<div class="top-cards-grid">
+  <!-- Coluna Informativos -->
+  <div class="informativos-coluna">
+    <!-- Seção de Informativos -->
+    <div
+      id="informativosContainer"
+      class="informativos-container"
+    ></div>
+
+    <!-- Botão para gerenciar informativos (apenas admin) -->
+    <div
+      id="btnGerenciarInformativos"
+      class="gerenciar-informativos-container"
+      style="display: none"
+    >
+      <button class="btn-gerenciar-informativos">
+        📢 Gerenciar Informativos
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Mural de Mensagens -->
+<div class="mural-mensagens-container">
+  <div class="mural-header">
+    <h3>💬 Mural de Recados</h3>
+    <button class="btn-nova-mensagem" id="btnNovaMensagem">
+      ➕ Nova Mensagem
+    </button>
+  </div>
+
+  <div id="mensagensList" class="mensagens-lista">
+    <div class="loading-mensagens">
+      <p>⏳ Carregando mensagens...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nova/Editar Mensagem -->
+<div id="modalMensagem" class="modal-mensagem" style="display: none">
+  <div class="modal-mensagem-content">
+    <div class="modal-mensagem-header">
+      <h3 id="tituloModalMensagem">Nova Mensagem</h3>
+      <button class="modal-close" id="btnFecharModalMensagem">×</button>
+    </div>
+    <div class="modal-mensagem-body">
+      <form id="formMensagem" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="inputMensagemTexto">Mensagem:</label>
+          <textarea
+            id="inputMensagemTexto"
+            rows="4"
+            placeholder="Digite sua mensagem..."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="inputMensagemImagem">Imagem (opcional):</label>
+          <input
+            type="file"
+            id="inputMensagemImagem"
+            accept="image/*"
+          />
+          <small>Máximo 5MB</small>
+        </div>
+
+        <div id="previewImagemContainer" style="display: none">
+          <img id="previewImagem" class="preview-imagem" alt="Preview" />
+          <button
+            type="button"
+            id="btnRemoverImagemPreview"
+            class="btn-remover-preview"
+          >
+            ✕ Remover
+          </button>
+        </div>
+
+        <input type="hidden" id="mensagemEditarId" />
+        <input type="hidden" id="removerImagemFlag" value="false" />
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            id="btnCancelarMensagem"
+            class="btn-secundario"
+          >
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primario">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Senhas Próximos Dias -->
+<div id="modalSenhas" class="modal-senhas" style="display: none">
+  <div class="modal-senhas-content">
+    <div class="modal-senhas-header">
+      <h3>🔐 Senhas LZT - Próximos 7 Dias</h3>
+      <button class="modal-close" id="btnFecharModalSenhas">×</button>
+    </div>
+    <div class="modal-senhas-body" id="listaSenhas">
+      <!-- Senhas serão inseridas aqui -->
+    </div>
+  </div>
+</div>
+
+<!-- Script será carregado dinamicamente pelo SPA Router -->

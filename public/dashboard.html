@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#667eea" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>Dashboard - Intranet</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  </head>
+  <body>
+    <!-- Header Global - No topo de tudo -->
+    <header class="header">
+      <div class="header-content">
+        <div class="user-profile">
+          <img
+            id="userPhoto"
+            src="/images/default-avatar.svg"
+            alt="Foto de perfil"
+            class="user-photo-large"
+          />
+          <div class="user-details">
+            <span class="user-greeting">Olá,</span>
+            <span id="userName" class="user-name">Usuário</span>
+          </div>
+        </div>
+        <button id="btnLogout" class="btn-logout">
+          <span class="logout-icon">🚪</span>
+          <span class="logout-text">Sair</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Botão Toggle Menu Mobile -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+      ☰ Menu
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Intranet</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html" class="active">
+            <span class="icon">🏠</span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="plantao.html">
+            <span class="icon">📅</span>
+            <span class="text">Plantão</span>
+          </a>
+        </li>
+        <li>
+          <a href="tomticket.html">
+            <span class="icon">🎫</span>
+            <span class="text">TomTicket</span>
+          </a>
+        </li>
+        <li>
+          <a href="dtef.html">
+            <span class="icon">🔐</span>
+            <span class="text">Senhas DTEF</span>
+          </a>
+        </li>
+        <li>
+          <a href="trmm.html">
+            <span class="icon">🖥️</span>
+            <span class="text">Tactical RMM</span>
+          </a>
+        </li>
+        <li>
+          <a href="anydesk.html">
+            <span class="icon">💻</span>
+            <span class="text">AnyDesk</span>
+          </a>
+        </li>
+        <li>
+          <a href="contratos.html">
+            <span class="icon">📋</span>
+            <span class="text">Contratos</span>
+          </a>
+        </li>
+        <li>
+          <a href="restrito.html">
+            <span class="icon">🔒</span>
+            <span class="text">Dados Restritos</span>
+          </a>
+        </li>
+        <li>
+          <a href="faq-erros.html">
+            <span class="icon">❓</span>
+            <span class="text">FAQ de Erros</span>
+          </a>
+        </li>
+        <li id="menuUsuarios">
+          <a href="usuarios.html">
+            <span class="icon">👥</span>
+            <span class="text">Usuários</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay para fechar sidebar no mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+      <main class="main-content">
+        <div class="welcome-section">
+          <h2>Bem-vindo ao Dashboard</h2>
+          <p>Você está logado no sistema!</p>
+        </div>
+
+        <!-- Senha Diária LZT -->
+        <div class="senha-diaria-container">
+          <div id="mensagemSenhaLZT" class="mensagem-senha-lzt"></div>
+          <div class="senha-linha">
+            <div class="senha-info">
+              <h3>🔐 Senha LZT de Hoje</h3>
+              <div class="senha-valor-wrapper">
+                <div class="senha-valor-container">
+                  <div class="senha-valor" id="senhaHoje">Carregando...</div>
+                  <button
+                    class="btn-copiar-senha"
+                    id="btnCopiarSenha"
+                    title="Copiar senha"
+                  >
+                    📋
+                  </button>
+                </div>
+                <small id="dataHoje">-</small>
+              </div>
+            </div>
+            <button class="btn-ver-proximas" id="btnVerProximasSenhas">
+              Ver próximos 7 dias
+            </button>
+          </div>
+        </div>
+
+        <!-- Grid: Informativos -->
+        <div class="top-cards-grid">
+          <!-- Coluna Informativos -->
+          <div class="informativos-coluna">
+            <!-- Seção de Informativos -->
+            <div
+              id="informativosContainer"
+              class="informativos-container"
+            ></div>
+
+            <!-- Botão para gerenciar informativos (apenas admin) -->
+            <div
+              id="btnGerenciarInformativos"
+              class="gerenciar-informativos-container"
+              style="display: none"
+            >
+              <button class="btn-gerenciar-informativos">
+                📢 Gerenciar Informativos
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mural de Mensagens -->
+        <div class="mural-mensagens-container">
+          <div class="mural-header">
+            <h3>💬 Mural de Recados</h3>
+            <button class="btn-nova-mensagem" id="btnNovaMensagem">
+              ➕ Nova Mensagem
+            </button>
+          </div>
+
+          <div id="mensagensList" class="mensagens-lista">
+            <div class="loading-mensagens">
+              <p>⏳ Carregando mensagens...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal Nova/Editar Mensagem -->
+    <div id="modalMensagem" class="modal-mensagem" style="display: none">
+      <div class="modal-mensagem-content">
+        <div class="modal-mensagem-header">
+          <h3 id="tituloModalMensagem">Nova Mensagem</h3>
+          <button class="modal-close" id="btnFecharModalMensagem">×</button>
+        </div>
+        <div class="modal-mensagem-body">
+          <form id="formMensagem" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="inputMensagemTexto">Mensagem:</label>
+              <textarea
+                id="inputMensagemTexto"
+                rows="4"
+                placeholder="Digite sua mensagem..."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="inputMensagemImagem">Imagem (opcional):</label>
+              <input type="file" id="inputMensagemImagem" accept="image/*" />
+              <small>Máximo 5MB</small>
+            </div>
+
+            <div id="previewImagemContainer" style="display: none">
+              <img id="previewImagem" class="preview-imagem" alt="Preview" />
+              <button
+                type="button"
+                id="btnRemoverImagemPreview"
+                class="btn-remover-preview"
+              >
+                ✕ Remover
+              </button>
+            </div>
+
+            <input type="hidden" id="mensagemEditarId" />
+            <input type="hidden" id="removerImagemFlag" value="false" />
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                id="btnCancelarMensagem"
+                class="btn-secundario"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn-primario">Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Senhas Próximos Dias -->
+    <div id="modalSenhas" class="modal-senhas" style="display: none">
+      <div class="modal-senhas-content">
+        <div class="modal-senhas-header">
+          <h3>🔐 Senhas LZT - Próximos 7 Dias</h3>
+          <button class="modal-close" id="btnFecharModalSenhas">×</button>
+        </div>
+        <div class="modal-senhas-body" id="listaSenhas">
+          <!-- Senhas serão inseridas aqui -->
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/dashboard.js"></script>
+  </body>
+</html>

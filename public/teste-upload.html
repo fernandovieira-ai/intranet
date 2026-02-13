@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teste de Upload PDF</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      input,
+      button {
+        padding: 10px;
+        margin: 10px 0;
+      }
+      #resultado {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+      .sucesso {
+        background: #d4edda;
+        color: #155724;
+      }
+      .erro {
+        background: #f8d7da;
+        color: #721c24;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Teste de Upload de PDF</h1>
+
+      <div>
+        <label>Selecione um arquivo (Imagem ou PDF):</label><br />
+        <input type="file" id="fileInput" accept="image/*,.pdf" />
+      </div>
+
+      <div>
+        <label>ID do Erro (existente):</label><br />
+        <input type="number" id="erroId" value="1" min="1" />
+      </div>
+
+      <button onclick="testarUpload()">Fazer Upload</button>
+
+      <div id="resultado"></div>
+
+      <div id="preview" style="margin-top: 20px"></div>
+    </div>
+
+    <script>
+      async function testarUpload() {
+        const fileInput = document.getElementById("fileInput");
+        const erroId = document.getElementById("erroId").value;
+        const resultado = document.getElementById("resultado");
+        const preview = document.getElementById("preview");
+
+        if (!fileInput.files[0]) {
+          resultado.className = "erro";
+          resultado.innerHTML = "❌ Selecione um arquivo!";
+          return;
+        }
+
+        const file = fileInput.files[0];
+        resultado.innerHTML = "⏳ Processando arquivo...";
+        resultado.className = "";
+
+        console.log("Arquivo selecionado:", {
+          nome: file.name,
+          tipo: file.type,
+          tamanho: file.size,
+        });
+
+        // Converter para base64
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const base64 = e.target.result;
+
+          console.log("Base64 gerado:", base64.substring(0, 100) + "...");
+          console.log("Tipo MIME detectado:", base64.substring(5, 30));
+
+          // Verificar tipo
+          const isPDF = file.type === "application/pdf";
+          const isImage = file.type.startsWith("image/");
+
+          preview.innerHTML = `
+                    <h3>Informações do Arquivo:</h3>
+                    <p><strong>Nome:</strong> ${file.name}</p>
+                    <p><strong>Tipo:</strong> ${file.type}</p>
+                    <p><strong>Tamanho:</strong> ${(file.size / 1024).toFixed(
+                      2
+                    )} KB</p>
+                    <p><strong>É PDF:</strong> ${
+                      isPDF ? "✅ Sim" : "❌ Não"
+                    }</p>
+                    <p><strong>É Imagem:</strong> ${
+                      isImage ? "✅ Sim" : "❌ Não"
+                    }</p>
+                    <p><strong>Base64 (primeiros 100 chars):</strong><br><code>${base64.substring(
+                      0,
+                      100
+                    )}...</code></p>
+                `;
+
+          try {
+            resultado.innerHTML = "⏳ Enviando para o servidor...";
+
+            const response = await fetch(
+              `/api/faq/erros/${erroId}/upload-imagem`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ imagemBase64: base64 }),
+              }
+            );
+
+            const data = await response.json();
+
+            console.log("Resposta do servidor:", data);
+
+            if (data.sucesso) {
+              resultado.className = "sucesso";
+              resultado.innerHTML = `✅ ${data.mensagem}`;
+
+              // Testar recuperação
+              setTimeout(() => {
+                testarRecuperacao(erroId);
+              }, 1000);
+            } else {
+              resultado.className = "erro";
+              resultado.innerHTML = `❌ ${data.mensagem}`;
+            }
+          } catch (error) {
+            console.error("Erro:", error);
+            resultado.className = "erro";
+            resultado.innerHTML = `❌ Erro: ${error.message}`;
+          }
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      async function testarRecuperacao(erroId) {
+        const preview = document.getElementById("preview");
+
+        try {
+          const timestamp = new Date().getTime();
+          const url = `/api/faq/erros/${erroId}/imagem?t=${timestamp}`;
+
+          // Verificar tipo via HEAD
+          const headResponse = await fetch(url, { method: "HEAD" });
+          const contentType = headResponse.headers.get("Content-Type");
+
+          console.log("Content-Type recebido:", contentType);
+
+          preview.innerHTML += `
+                    <h3>Recuperação do Arquivo:</h3>
+                    <p><strong>Content-Type:</strong> ${contentType}</p>
+                    <p><strong>URL:</strong> <a href="${url}" target="_blank">${url}</a></p>
+                `;
+
+          if (contentType && contentType.includes("pdf")) {
+            preview.innerHTML += `
+                        <iframe src="${url}" style="width: 100%; height: 600px; border: 1px solid #ccc;"></iframe>
+                    `;
+          } else {
+            preview.innerHTML += `
+                        <img src="${url}" style="max-width: 100%; border: 1px solid #ccc;">
+                    `;
+          }
+        } catch (error) {
+          console.error("Erro ao recuperar:", error);
+          preview.innerHTML += `<p class="erro">❌ Erro ao recuperar: ${error.message}</p>`;
+        }
+      }
+    </script>
+  </body>
+</html>

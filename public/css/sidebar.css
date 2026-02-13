@@ -1,0 +1,131 @@
+/* Sidebar Responsivo - Tema Roxo Escuro */
+.sidebar {
+  width: 220px;
+  background: linear-gradient(135deg, #24024b, #4a0e78);
+  color: #fff;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  box-shadow: 2px 0 8px rgba(36, 2, 75, 0.15);
+  transition: left 0.3s;
+}
+.sidebar-logo {
+  font-size: 1.6em;
+  font-weight: bold;
+  padding: 24px 16px 12px 16px;
+  letter-spacing: 1px;
+}
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar-menu li {
+  margin: 0;
+}
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.08em;
+  border-left: 4px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+.sidebar-menu a:hover {
+  background: rgba(74, 14, 120, 0.18);
+  border-left: 4px solid #4a0e78;
+}
+.sidebar-menu .icon {
+  font-size: 1.3em;
+  margin-right: 12px;
+}
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  background: #4a0e78;
+  color: #fff;
+  border: none;
+  font-size: 2em;
+  z-index: 101;
+  border-radius: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(36, 2, 75, 0.12);
+}
+@media (max-width: 900px) {
+  .sidebar {
+    width: 60px;
+  }
+  .sidebar-menu .text {
+    display: none;
+  }
+  .main-content {
+    margin-left: 60px;
+  }
+  .menu-toggle {
+    display: block;
+    position: absolute;
+    left: 16px;
+    top: 16px;
+  }
+}
+@media (max-width: 600px) {
+  .sidebar {
+    left: -220px;
+    width: 220px;
+    box-shadow: 2px 0 8px rgba(36, 2, 75, 0.15);
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    transition: left 0.3s;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .sidebar-menu .text {
+    display: inline;
+  }
+  .menu-toggle {
+    display: block;
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    margin: 0;
+    z-index: 101;
+  }
+  .sidebar-logo {
+    padding-top: 32px;
+    padding-bottom: 16px;
+    text-align: center;
+  }
+}
+.main-content {
+  margin-left: 220px;
+  padding: 24px;
+  transition: margin-left 0.3s;
+}
+@media (max-width: 900px) {
+  .main-content {
+    .menu-toggle-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    margin-left: 60px;
+  }
+}
+@media (max-width: 600px) {
+  .main-content {
+    margin-left: 0;
+  }
+}

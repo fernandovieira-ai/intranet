@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TomTicket - Chamados - Intranet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/tomticket.css" />
+  </head>
+  <body>
+    <!-- Header Global - No topo de tudo -->
+    <header class="header">
+      <div class="header-content">
+        <div class="user-profile">
+          <img
+            id="userPhoto"
+            src="/images/default-avatar.svg"
+            alt="Foto de perfil"
+            class="user-photo-large"
+          />
+          <div class="user-details">
+            <span class="user-greeting">Olá,</span>
+            <span id="userName" class="user-name">Usuário</span>
+          </div>
+        </div>
+        <button id="btnLogout" class="btn-logout">
+          <span class="logout-icon">🚪</span>
+          <span class="logout-text">Sair</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Botão Toggle Menu Mobile -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+      ☰ Menu
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Intranet</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="icon">🏠</span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="plantao.html">
+            <span class="icon">📅</span>
+            <span class="text">Plantão</span>
+          </a>
+        </li>
+        <li>
+          <a href="tomticket.html" class="active">
+            <span class="icon">🎫</span>
+            <span class="text">TomTicket</span>
+          </a>
+        </li>
+        <li>
+          <a href="dtef.html">
+            <span class="icon">🔐</span>
+            <span class="text">Senhas DTEF</span>
+          </a>
+        </li>
+        <li>
+          <a href="trmm.html">
+            <span class="icon">🖥️</span>
+            <span class="text">Tactical RMM</span>
+          </a>
+        </li>
+        <li>
+          <a href="anydesk.html">
+            <span class="icon">💻</span>
+            <span class="text">AnyDesk</span>
+          </a>
+        </li>
+        <li>
+          <a href="contratos.html">
+            <span class="icon">📋</span>
+            <span class="text">Contratos</span>
+          </a>
+        </li>
+        <li>
+          <a href="restrito.html">
+            <span class="icon">🔒</span>
+            <span class="text">Dados Restritos</span>
+          </a>
+        </li>
+        <li>
+          <a href="faq-erros.html">
+            <span class="icon">❓</span>
+            <span class="text">FAQ de Erros</span>
+          </a>
+        </li>
+        <li id="menuUsuarios">
+          <a href="usuarios.html">
+            <span class="icon">👥</span>
+            <span class="text">Usuários</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay para fechar sidebar no mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+      <main class="main-content">
+        <div class="page-header">
+          <h2 class="page-title">🎫 TomTicket</h2>
+          <div class="header-actions">
+            <a href="dashboard.html" class="btn-back">
+              <span class="btn-back-icon">←</span>
+              Voltar
+            </a>
+            <button id="btnNovoChamado" class="btn-primary">
+              <i class="fas fa-plus"></i> Novo Chamado
+            </button>
+            <button id="btnAtualizarLista" class="btn-secondary">
+              <i class="fas fa-sync-alt"></i> Atualizar
+            </button>
+            <a
+              href="https://console.tomticket.com/login"
+              target="_blank"
+              class="btn-primary"
+            >
+              <i class="fas fa-external-link-alt"></i> Abrir TomTicket
+            </a>
+          </div>
+        </div>
+
+        <!-- Lista de Chamados -->
+        <div class="chamados-container">
+          <h2>📋 Chamados Abertos</h2>
+          <div id="chamadosLista" class="chamados-lista">
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Carregando chamados...</p>
+            </div>
+          </div>
+          <!-- Controles de Paginação -->
+          <div id="paginacaoContainer"></div>
+        </div>
+
+        <div class="help-section">
+          <h3>❓ Precisa de Ajuda?</h3>
+          <div class="help-cards">
+            <div class="help-card">
+              <i class="fas fa-plus-circle"></i>
+              <h4>Criar Chamado</h4>
+              <p>Clique no botão "Novo Chamado" no painel do TomTicket</p>
+            </div>
+            <div class="help-card">
+              <i class="fas fa-list"></i>
+              <h4>Ver Chamados</h4>
+              <p>Acesse "Meus Chamados" para visualizar todos seus tickets</p>
+            </div>
+            <div class="help-card">
+              <i class="fas fa-comments"></i>
+              <h4>Acompanhar</h4>
+              <p>Receba notificações por e-mail sobre atualizações</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal Novo Chamado -->
+    <div id="modalNovoChamado" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Novo Chamado</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <form id="formNovoChamado">
+          <!-- Campo de busca de cliente -->
+          <div class="form-group">
+            <label for="buscarCliente">
+              <i class="fas fa-search"></i> Buscar Cliente
+            </label>
+            <div class="search-cliente-container">
+              <input
+                type="text"
+                id="buscarCliente"
+                placeholder="Digite nome ou email do cliente..."
+                autocomplete="off"
+              />
+              <button type="button" id="btnBuscarCliente" class="btn-search">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            <div id="resultadosClientes" class="resultados-clientes"></div>
+          </div>
+
+          <!-- Box de informações do cliente selecionado -->
+          <div
+            id="infoClienteChamado"
+            class="info-cliente-box"
+            style="display: none"
+          ></div>
+
+          <!-- Cliente selecionado (oculto inicialmente) -->
+          <input type="hidden" id="clienteSelecionadoId" />
+          <input type="hidden" id="clienteSelecionadoNome" />
+          <input type="hidden" id="clienteSelecionadoEmail" />
+          <input type="hidden" id="clienteSelecionadoType" value="E" />
+
+          <div class="form-group">
+            <label for="assunto">Assunto *</label>
+            <input
+              type="text"
+              id="assunto"
+              required
+              placeholder="Digite o assunto do chamado"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição *</label>
+            <textarea
+              id="descricao"
+              required
+              rows="5"
+              placeholder="Descreva o problema ou solicitação"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="prioridade">Prioridade</label>
+            <select id="prioridade">
+              <option value="low">Baixa</option>
+              <option value="normal" selected>Normal</option>
+              <option value="high">Alta</option>
+              <option value="urgent">Urgente</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="departamento">Departamento *</label>
+            <select id="departamento" required>
+              <option value="">Carregando departamentos...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <select id="categoria">
+              <option value="">Carregando categorias...</option>
+            </select>
+          </div>
+
+          <!-- Container para campos personalizados -->
+          <div id="camposPersonalizadosContainer"></div>
+
+          <div class="form-actions">
+            <button type="button" id="btnCancelar" class="btn btn-secondary">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">Criar Chamado</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mensagem de feedback -->
+    <div id="mensagem" class="mensagem"></div>
+
+    <!-- Modal Detalhes do Chamado -->
+    <div id="modalDetalhesChamado" class="modal">
+      <div class="modal-content modal-detalhes">
+        <div class="modal-header">
+          <h2 id="detalhesTitulo">Detalhes do Chamado</h2>
+          <button class="modal-close" onclick="fecharDetalhes()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body-detalhes">
+          <div class="detalhes-secao">
+            <h3><i class="fas fa-info-circle"></i> Informações Gerais</h3>
+            <div class="detalhes-grid">
+              <div class="detalhe-item">
+                <span class="detalhe-label">Protocolo:</span>
+                <span class="detalhe-valor" id="detalheProtocolo">-</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="detalhe-label">Status:</span>
+                <span class="detalhe-valor" id="detalheStatus">-</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="detalhe-label">Prioridade:</span>
+                <span class="detalhe-valor" id="detalhePrioridade">-</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="detalhe-label">Data de Criação:</span>
+                <span class="detalhe-valor" id="detalheData">-</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="detalhe-label">Solicitante:</span>
+                <span class="detalhe-valor" id="detalheSolicitante">-</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="detalhe-label">Atendente:</span>
+                <span class="detalhe-valor" id="detalheAtendente">-</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="detalhe-label">Departamento:</span>
+                <span class="detalhe-valor" id="detalheDepartamento">-</span>
+              </div>
+              <div class="detalhe-item">
+                <span class="detalhe-label">Categoria:</span>
+                <span class="detalhe-valor" id="detalheCategoria">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detalhes-secao">
+            <h3><i class="fas fa-clipboard"></i> Descrição</h3>
+            <div class="detalhe-descricao" id="detalheDescricao">
+              Carregando...
+            </div>
+          </div>
+
+          <div class="detalhes-acoes">
+            <button class="btn btn-primary" onclick="abrirChamadoExterno()">
+              <i class="fas fa-external-link-alt"></i> Abrir no TomTicket
+            </button>
+            <button class="btn btn-secondary" onclick="fecharDetalhes()">
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/tomticket.js"></script>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"
+    />
+    <meta name="theme-color" content="#667eea" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Intranet" />
+    <title>Login - Intranet</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/images/icon-192.png" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-box">
+        <div class="login-header">
+          <div class="logo-container">
+            <img
+              src="images/logo.png"
+              alt="Logo"
+              class="logo"
+              id="logoImg"
+              onerror="this.style.display='none'"
+            />
+          </div>
+          <h1>Intranet</h1>
+          <p>Faça login para acessar</p>
+        </div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="usuario">Usuário</label>
+            <input
+              type="text"
+              id="usuario"
+              name="usuario"
+              required
+              autocomplete="username"
+            />
+          </div>
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" id="lembrar" name="lembrar" />
+              Lembrar-me
+            </label>
+          </div>
+          <button type="submit" class="btn-login">Entrar</button>
+          <div id="mensagem" class="mensagem"></div>
+        </form>
+        <div class="login-footer">
+          <a href="#" class="link-recuperar">Esqueceu a senha?</a>
+        </div>
+      </div>
+    </div>
+    <script src="js/login.js"></script>
+  </body>
+</html>

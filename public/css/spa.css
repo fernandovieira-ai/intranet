@@ -1,0 +1,226 @@
+/* ========== SPA.CSS - ESTILOS PARA SINGLE PAGE APPLICATION ========== */
+
+/* ========== LOADER (Barra de carregamento) ========== */
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.page-loader.active {
+  opacity: 1;
+}
+
+.loader-spinner {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ========== CONTAINER DINÂMICO ========== */
+#conteudoDinamico {
+  width: 100%;
+  min-height: 400px;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+#conteudoDinamico.loading {
+  opacity: 0;
+}
+
+#conteudoDinamico.loaded {
+  opacity: 1;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== PROTEÇÃO CONTRA DUPLICAÇÃO ========== */
+
+/* Prevenir containers duplicados */
+#conteudoDinamico .container,
+#conteudoDinamico .main-content {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Esconder headers/navs/sidebars duplicados */
+#conteudoDinamico header,
+#conteudoDinamico .header,
+#conteudoDinamico nav,
+#conteudoDinamico .sidebar,
+#conteudoDinamico .sidebar-overlay {
+  display: none !important;
+}
+
+/* ========== MENSAGENS DE ERRO ========== */
+.error-message {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border-radius: 12px;
+  margin: 40px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error-message h2 {
+  color: #e74c3c;
+  margin-bottom: 16px;
+  font-size: 28px;
+}
+
+.error-message p {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.error-message .btn-primary {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.error-message .btn-primary:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+}
+
+/* ========== RESPONSIVIDADE MOBILE ========== */
+@media (max-width: 768px) {
+  .page-loader {
+    height: 2px;
+  }
+
+  #conteudoDinamico {
+    min-height: 300px;
+  }
+
+  .error-message {
+    margin: 20px;
+    padding: 40px 16px;
+  }
+
+  .error-message h2 {
+    font-size: 24px;
+  }
+
+  .error-message p {
+    font-size: 14px;
+  }
+}
+
+/* ========== TRANSIÇÕES SUAVES ========== */
+a[data-page] {
+  transition: all 0.3s ease;
+}
+
+a[data-page]:hover {
+  transform: translateX(4px);
+}
+
+a[data-page].active {
+  background: rgba(102, 126, 234, 0.1);
+  border-left: 3px solid #667eea;
+}
+
+/* ========== SCROLLBAR CUSTOMIZADA ========== */
+#conteudoDinamico::-webkit-scrollbar {
+  width: 8px;
+}
+
+#conteudoDinamico::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+#conteudoDinamico::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+#conteudoDinamico::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* ========== MELHORIAS DE PERFORMANCE ========== */
+#conteudoDinamico {
+  will-change: opacity;
+  contain: layout style paint;
+}
+
+.page-loader {
+  will-change: opacity;
+}
+
+/* ========== ACESSIBILIDADE ========== */
+@media (prefers-reduced-motion: reduce) {
+  #conteudoDinamico,
+  #conteudoDinamico.loading,
+  #conteudoDinamico.loaded,
+  .page-loader,
+  a[data-page] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ========== MODO ESCURO (Opcional) ========== */
+@media (prefers-color-scheme: dark) {
+  .error-message {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+
+  .error-message h2 {
+    color: #fc8181;
+  }
+
+  .error-message p {
+    color: #cbd5e0;
+  }
+}
+
+/* ========== FIM DO ARQUIVO ========== */

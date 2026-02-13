@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#667eea" />
+    <title>Contratos - Intranet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/contratos.css" />
+  </head>
+  <body>
+    <!-- Header Global - No topo de tudo -->
+    <header class="header">
+      <div class="header-content">
+        <div class="user-profile">
+          <img
+            id="userPhoto"
+            src="/images/default-avatar.svg"
+            alt="Foto de perfil"
+            class="user-photo-large"
+          />
+          <div class="user-details">
+            <span class="user-greeting">Olá,</span>
+            <span id="userName" class="user-name">Usuário</span>
+          </div>
+        </div>
+        <button id="btnLogout" class="btn-logout">
+          <span class="logout-icon">🚪</span>
+          <span class="logout-text">Sair</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Botão Toggle Menu Mobile -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+      ☰ Menu
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Intranet</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="icon">🏠</span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="plantao.html">
+            <span class="icon">📅</span>
+            <span class="text">Plantão</span>
+          </a>
+        </li>
+        <li>
+          <a href="tomticket.html">
+            <span class="icon">🎫</span>
+            <span class="text">TomTicket</span>
+          </a>
+        </li>
+        <li>
+          <a href="dtef.html">
+            <span class="icon">🔐</span>
+            <span class="text">Senhas DTEF</span>
+          </a>
+        </li>
+        <li>
+          <a href="trmm.html">
+            <span class="icon">🖥️</span>
+            <span class="text">Tactical RMM</span>
+          </a>
+        </li>
+        <li>
+          <a href="anydesk.html">
+            <span class="icon">💻</span>
+            <span class="text">AnyDesk</span>
+          </a>
+        </li>
+        <li>
+          <a href="contratos.html" class="active">
+            <span class="icon">📋</span>
+            <span class="text">Contratos</span>
+          </a>
+        </li>
+        <li>
+          <a href="restrito.html">
+            <span class="icon">🔒</span>
+            <span class="text">Dados Restritos</span>
+          </a>
+        </li>
+        <li>
+          <a href="faq-erros.html">
+            <span class="icon">❓</span>
+            <span class="text">FAQ de Erros</span>
+          </a>
+        </li>
+        <li id="menuUsuarios">
+          <a href="usuarios.html">
+            <span class="icon">👥</span>
+            <span class="text">Usuários</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay para fechar sidebar no mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+      <main class="main-content">
+        <div class="page-header">
+          <h2 class="page-title">📋 Contratos</h2>
+          <div class="header-actions">
+            <a href="dashboard.html" class="btn-back">
+              <span class="btn-back-icon">←</span>
+              Voltar
+            </a>
+          </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="filtros-container">
+          <div class="filtro-grupo">
+            <label for="filtroTipo">Filtrar por:</label>
+            <select id="filtroTipo" class="filtro-select">
+              <option value="todos">Todos</option>
+              <option value="grupo">Grupo</option>
+              <option value="cnpj">CNPJ</option>
+              <option value="nome">Nome do Cliente</option>
+              <option value="tipoItem">Tipo de Contrato</option>
+            </select>
+          </div>
+
+          <div class="filtro-busca" id="containerBusca">
+            <input
+              type="text"
+              id="inputBusca"
+              class="input-busca"
+              placeholder="Digite para pesquisar..."
+            />
+            <select
+              id="selectTipoItem"
+              class="filtro-select"
+              style="display: none"
+            >
+              <option value="">Selecione o tipo de contrato...</option>
+            </select>
+          </div>
+
+          <button id="btnLimparFiltro" class="btn-limpar-filtro">
+            ✕ Limpar
+          </button>
+        </div>
+
+        <div id="loading" class="loading">Carregando contratos...</div>
+        <div id="mensagem" class="mensagem"></div>
+
+        <!-- Container de grupos -->
+        <div id="gruposContainer" class="grupos-container"></div>
+      </main>
+    </div>
+
+    <!-- Modal de Hospedagem -->
+    <div id="modalHospedagem" class="modal-hospedagem">
+      <div class="modal-hospedagem-content">
+        <div class="modal-hospedagem-header">
+          <h2>Gerenciar Hospedagem</h2>
+          <button class="btn-fechar-modal" onclick="fecharModalHospedagem()">
+            ✕
+          </button>
+        </div>
+
+        <div id="mensagemModal" class="mensagem-modal"></div>
+
+        <div class="modal-hospedagem-body">
+          <!-- Lista de hospedagens -->
+          <div id="listaHospedagens"></div>
+
+          <!-- Formulário de hospedagem -->
+          <div id="formularioHospedagem" style="display: none">
+            <h3 id="tituloFormHospedagem">Nova Hospedagem</h3>
+            <form onsubmit="event.preventDefault(); salvarHospedagem();">
+              <div class="form-group">
+                <label for="hospBase">Base: *</label>
+                <input
+                  type="text"
+                  id="hospBase"
+                  class="form-control"
+                  maxlength="30"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="hospHost">Host: *</label>
+                <input
+                  type="text"
+                  id="hospHost"
+                  class="form-control"
+                  maxlength="100"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="hospUsuario">Usuário:</label>
+                <input
+                  type="text"
+                  id="hospUsuario"
+                  class="form-control"
+                  maxlength="20"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="hospSenha">Senha:</label>
+                <input
+                  type="password"
+                  id="hospSenha"
+                  class="form-control"
+                  maxlength="150"
+                  placeholder="Senha será criptografada"
+                />
+                <small class="form-text"
+                  >A senha será armazenada de forma criptografada.
+                  Administradores podem visualizar e copiar a senha.</small
+                >
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-salvar">Salvar</button>
+                <button
+                  type="button"
+                  class="btn-cancelar"
+                  onclick="ocultarFormularioHospedagem()"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="modal-hospedagem-footer">
+          <button
+            id="btnAdicionarHospedagem"
+            class="btn-adicionar"
+            onclick="adicionarHospedagem()"
+          >
+            + Nova Hospedagem
+          </button>
+          <button class="btn-fechar" onclick="fecharModalHospedagem()">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/contratos.js"></script>
+  </body>
+</html>

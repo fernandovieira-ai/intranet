@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ de Erros - Intranet</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/faq-erros.css" />
+  </head>
+  <body>
+    <!-- Header Global - No topo de tudo -->
+    <header class="header">
+      <div class="header-content">
+        <div class="user-profile">
+          <img
+            id="userPhoto"
+            src="/images/default-avatar.svg"
+            alt="Foto de perfil"
+            class="user-photo-large"
+          />
+          <div class="user-details">
+            <span class="user-greeting">Olá,</span>
+            <span id="userName" class="user-name">Usuário</span>
+          </div>
+        </div>
+        <button id="btnLogout" class="btn-logout">
+          <span class="logout-icon">🚪</span>
+          <span class="logout-text">Sair</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Botão Toggle Menu Mobile -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+      ☰ Menu
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Intranet</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="icon">🏠</span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="plantao.html">
+            <span class="icon">📅</span>
+            <span class="text">Plantão</span>
+          </a>
+        </li>
+        <li>
+          <a href="tomticket.html">
+            <span class="icon">🎫</span>
+            <span class="text">TomTicket</span>
+          </a>
+        </li>
+        <li>
+          <a href="dtef.html">
+            <span class="icon">🔐</span>
+            <span class="text">Senhas DTEF</span>
+          </a>
+        </li>
+        <li>
+          <a href="trmm.html">
+            <span class="icon">🖥️</span>
+            <span class="text">Tactical RMM</span>
+          </a>
+        </li>
+        <li>
+          <a href="anydesk.html">
+            <span class="icon">💻</span>
+            <span class="text">AnyDesk</span>
+          </a>
+        </li>
+        <li>
+          <a href="contratos.html">
+            <span class="icon">📋</span>
+            <span class="text">Contratos</span>
+          </a>
+        </li>
+        <li>
+          <a href="restrito.html">
+            <span class="icon">🔒</span>
+            <span class="text">Dados Restritos</span>
+          </a>
+        </li>
+        <li>
+          <a href="faq-erros.html" class="active">
+            <span class="icon">❓</span>
+            <span class="text">FAQ de Erros</span>
+          </a>
+        </li>
+        <li id="menuUsuarios">
+          <a href="usuarios.html">
+            <span class="icon">👥</span>
+            <span class="text">Usuários</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay para fechar sidebar no mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+      <main class="main-content">
+        <div class="page-header">
+          <h2 class="page-title">❓ FAQ de Erros</h2>
+          <div class="header-actions">
+            <a href="dashboard.html" class="btn-back">
+              <span class="btn-back-icon">←</span>
+              Voltar
+            </a>
+            <button class="btn-primary" id="btnNovoErro">➕ Novo Erro</button>
+          </div>
+        </div>
+
+        <div id="mensagem" class="mensagem"></div>
+
+        <!-- Card de Pesquisa -->
+        <div class="search-card">
+          <h3 class="search-card-title">🔍 Pesquisar Erros</h3>
+          <div class="search-form">
+            <div class="form-group">
+              <label for="filtroSistema">Sistema:</label>
+              <select id="filtroSistema">
+                <option value="">Todos os sistemas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="filtroTexto">Buscar por texto:</label>
+              <input
+                type="text"
+                id="filtroTexto"
+                placeholder="Digite assunto ou descrição do erro..."
+              />
+            </div>
+            <div class="search-actions">
+              <button class="btn-primary" id="btnPesquisar">
+                🔍 Pesquisar
+              </button>
+              <button class="btn-secondary" id="btnLimparFiltros">
+                🔄 Limpar Filtros
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabela de Erros -->
+        <div class="erros-container">
+          <div class="erros-header">
+            <h3>📋 Lista de Erros Cadastrados</h3>
+            <div class="erros-header-right">
+              <div class="registros-por-pagina">
+                <label for="registrosPorPagina">Registros por página:</label>
+                <select id="registrosPorPagina">
+                  <option value="10">10</option>
+                  <option value="25" selected>25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="all">Todos</option>
+                </select>
+              </div>
+              <span id="totalErros" class="total-badge">0 erros</span>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="erros-table">
+              <thead>
+                <tr>
+                  <th>Sistema</th>
+                  <th>Assunto</th>
+                  <th>Descrição do Erro</th>
+                  <th>Resolução</th>
+                  <th>Imagem</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="errosTableBody">
+                <tr>
+                  <td colspan="6" class="loading">Carregando erros...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="paginacao-container"
+            id="paginacaoContainer"
+            style="display: none"
+          >
+            <button
+              class="btn-paginacao"
+              id="btnPrimeira"
+              title="Primeira página"
+            >
+              ««
+            </button>
+            <button
+              class="btn-paginacao"
+              id="btnAnterior"
+              title="Página anterior"
+            >
+              ‹
+            </button>
+            <span class="info-pagina" id="infoPagina">Página 1 de 1</span>
+            <button
+              class="btn-paginacao"
+              id="btnProxima"
+              title="Próxima página"
+            >
+              ›
+            </button>
+            <button class="btn-paginacao" id="btnUltima" title="Última página">
+              »»
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal Cadastro/Edição de Erro -->
+    <div id="modalErro" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Cadastro de Erro de Sistema</h3>
+          <button class="modal-close" id="btnFecharModal">×</button>
+        </div>
+        <form id="formErro">
+          <input type="hidden" id="erroId" />
+
+          <div class="form-group">
+            <label for="nomSistema">Sistema: *</label>
+            <select id="nomSistema" required>
+              <option value="">Selecione um sistema</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="desAssunto">Assunto: *</label>
+            <input
+              type="text"
+              id="desAssunto"
+              required
+              placeholder="Ex: Erro ao gerar relatório"
+              maxlength="200"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="desErro">Descrição do Erro: *</label>
+            <textarea
+              id="desErro"
+              required
+              rows="6"
+              placeholder="Descreva detalhadamente o erro encontrado..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="desResolucao">Resolução: *</label>
+            <textarea
+              id="desResolucao"
+              required
+              rows="6"
+              placeholder="Descreva a solução ou procedimento para resolver o erro..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="imagemInput">Arquivo (Imagem ou PDF):</label>
+            <div class="image-upload-container">
+              <input
+                type="file"
+                id="imagemInput"
+                accept=".png,.jpg,.jpeg,.pdf"
+                style="display: none"
+              />
+              <button
+                type="button"
+                class="btn-upload"
+                onclick="document.getElementById('imagemInput').click()"
+              >
+                📎 Escolher Arquivo
+              </button>
+              <span id="imagemNome" class="image-name"
+                >Nenhum arquivo selecionado</span
+              >
+              <button
+                type="button"
+                class="btn-remover-imagem"
+                id="btnRemoverImagem"
+                style="display: none"
+              >
+                🗑️ Remover
+              </button>
+            </div>
+            <div
+              id="imagemPreviewContainer"
+              class="image-preview-container"
+              style="display: none"
+            >
+              <img id="imagemPreview" class="image-preview" alt="Preview" />
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="btnCancelar">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">💾 Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Visualizar Imagem -->
+    <div id="modalImagem" class="modal-image">
+      <div class="modal-image-content">
+        <button class="modal-close" id="btnFecharModalImagem">×</button>
+        <img id="imagemAmpliada" src="" alt="Imagem ampliada" />
+      </div>
+    </div>
+
+    <!-- Modal Detalhes do Erro -->
+    <div id="modalDetalhes" class="modal">
+      <div class="modal-content modal-detalhes">
+        <div class="modal-header">
+          <h3 id="detalhesTitle">Detalhes do Erro</h3>
+          <button class="modal-close" id="btnFecharDetalhes">×</button>
+        </div>
+        <div class="detalhes-body">
+          <div class="detalhes-section">
+            <div class="detalhes-meta">
+              <span id="detalhesSistema" class="sistema-badge">Sistema</span>
+              <h4 id="detalhesAssunto" class="detalhes-assunto">Assunto</h4>
+            </div>
+          </div>
+
+          <div class="detalhes-section">
+            <h5 class="detalhes-label">🔴 Descrição do Erro:</h5>
+            <div id="detalhesErro" class="detalhes-texto"></div>
+          </div>
+
+          <div class="detalhes-section">
+            <h5 class="detalhes-label">✅ Resolução:</h5>
+            <div id="detalhesResolucao" class="detalhes-texto"></div>
+          </div>
+
+          <div
+            id="detalhesImagemContainer"
+            class="detalhes-section"
+            style="display: none"
+          >
+            <h5 class="detalhes-label">📷 Imagem:</h5>
+            <div class="detalhes-imagem-wrapper">
+              <img
+                id="detalhesImagem"
+                class="detalhes-imagem"
+                alt="Imagem do erro"
+              />
+              <div class="detalhes-botoes">
+                <button id="btnAmpliarDetalhes" class="btn-ampliar">
+                  🔍 Ampliar
+                </button>
+                <button id="btnDownloadDetalhes" class="btn-download">
+                  ⬇️ Download
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="detalhes-section">
+            <p
+              id="detalhesUsuario"
+              class="detalhes-usuario"
+              style="font-size: 0.85em; color: #666; margin-top: 10px"
+            ></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/faq-erros.js"></script>
+  </body>
+</html>

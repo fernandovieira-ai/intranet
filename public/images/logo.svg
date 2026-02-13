@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Círculo de fundo com gradiente -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Círculo principal -->
+  <circle cx="100" cy="100" r="90" fill="url(#grad1)" />
+  
+  <!-- Letra I estilizada (representando Intranet) -->
+  <rect x="85" y="50" width="30" height="100" fill="white" rx="5" />
+  <circle cx="100" cy="35" r="8" fill="white" />
+  
+  <!-- Detalhe decorativo -->
+  <path d="M 70 80 Q 100 70 130 80" stroke="white" stroke-width="3" fill="none" opacity="0.5" />
+  <path d="M 70 120 Q 100 130 130 120" stroke="white" stroke-width="3" fill="none" opacity="0.5" />
+</svg>

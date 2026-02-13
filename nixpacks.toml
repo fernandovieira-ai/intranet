@@ -1,0 +1,14 @@
+# Nixpacks configuration for Railway
+# https://nixpacks.com/docs/configuration/file
+
+[phases.setup]
+nixPkgs = ["nodejs_18", "php82", "php82Extensions.pdo", "php82Extensions.pdo_pgsql", "php82Extensions.pgsql"]
+
+[phases.install]
+cmds = ["npm install"]
+
+[phases.build]
+cmds = ["echo 'Build phase complete'"]
+
+[start]
+cmd = "node server.js"

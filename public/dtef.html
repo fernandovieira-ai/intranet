@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Senhas DTEF - Intranet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/dtef.css" />
+  </head>
+  <body>
+    <!-- Header Global - No topo de tudo -->
+    <header class="header">
+      <div class="header-content">
+        <div class="user-profile">
+          <img
+            id="userPhoto"
+            src="/images/default-avatar.svg"
+            alt="Foto de perfil"
+            class="user-photo-large"
+          />
+          <div class="user-details">
+            <span class="user-greeting">Olá,</span>
+            <span id="userName" class="user-name">Usuário</span>
+          </div>
+        </div>
+        <button id="btnLogout" class="btn-logout">
+          <span class="logout-icon">🚪</span>
+          <span class="logout-text">Sair</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Botão Toggle Menu Mobile -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+      ☰ Menu
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-logo">Intranet</div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html">
+            <span class="icon">🏠</span>
+            <span class="text">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="plantao.html">
+            <span class="icon">📅</span>
+            <span class="text">Plantão</span>
+          </a>
+        </li>
+        <li>
+          <a href="tomticket.html">
+            <span class="icon">🎫</span>
+            <span class="text">TomTicket</span>
+          </a>
+        </li>
+        <li>
+          <a href="dtef.html" class="active">
+            <span class="icon">🔐</span>
+            <span class="text">Senhas DTEF</span>
+          </a>
+        </li>
+        <li>
+          <a href="trmm.html">
+            <span class="icon">🖥️</span>
+            <span class="text">Tactical RMM</span>
+          </a>
+        </li>
+        <li>
+          <a href="anydesk.html">
+            <span class="icon">💻</span>
+            <span class="text">AnyDesk</span>
+          </a>
+        </li>
+        <li>
+          <a href="contratos.html">
+            <span class="icon">📋</span>
+            <span class="text">Contratos</span>
+          </a>
+        </li>
+        <li>
+          <a href="restrito.html">
+            <span class="icon">🔒</span>
+            <span class="text">Dados Restritos</span>
+          </a>
+        </li>
+        <li>
+          <a href="faq-erros.html">
+            <span class="icon">❓</span>
+            <span class="text">FAQ de Erros</span>
+          </a>
+        </li>
+        <li id="menuUsuarios">
+          <a href="usuarios.html">
+            <span class="icon">👥</span>
+            <span class="text">Usuários</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay para fechar sidebar no mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="container">
+      <main class="main-content">
+        <div class="page-header">
+          <h2 class="page-title">🔐 Senhas DTEF</h2>
+          <div class="header-actions">
+            <a href="dashboard.html" class="btn-back">
+              <span class="btn-back-icon">←</span>
+              Voltar
+            </a>
+            <button
+              id="btnNovaSenha"
+              class="btn-primary"
+              style="display: none"
+              title="Cadastrar nova senha"
+            >
+              ➕ Nova Senha
+            </button>
+          </div>
+        </div>
+        <!-- Barra de pesquisa -->
+        <div class="toolbar">
+          <div class="search-box">
+            <input
+              type="text"
+              id="inputPesquisa"
+              placeholder="Pesquisar por CNPJ ou nome da loja..."
+              autocomplete="off"
+            />
+            <button
+              id="btnLimparPesquisa"
+              class="btn-limpar"
+              title="Limpar pesquisa"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista de senhas -->
+        <div class="senhas-container">
+          <div id="listaSenhas" class="senhas-lista">
+            <!-- Senhas serão carregadas aqui -->
+          </div>
+          <div id="mensagemVazia" class="mensagem-vazia" style="display: none">
+            <p>📭 Nenhuma senha encontrada</p>
+          </div>
+          <div id="loading" class="loading" style="display: none">
+            <p>⏳ Carregando...</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal para criar/editar senha -->
+    <div id="modalSenha" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="tituloModal">Nova Senha DTEF</h2>
+          <button class="modal-close" id="btnFecharModal">×</button>
+        </div>
+        <form id="formSenha" class="modal-body">
+          <div class="form-group">
+            <label for="inputCnpj">CNPJ *</label>
+            <input
+              type="text"
+              id="inputCnpj"
+              placeholder="00000000000000"
+              maxlength="14"
+              required
+              autocomplete="off"
+            />
+            <small>Apenas números (14 dígitos)</small>
+          </div>
+
+          <div class="form-group">
+            <label for="inputLoja">Nome da Loja</label>
+            <input
+              type="text"
+              id="inputLoja"
+              placeholder="Ex: Loja Centro"
+              maxlength="255"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="inputSenha">Senha *</label>
+            <div class="senha-input-group">
+              <input
+                type="password"
+                id="inputSenha"
+                placeholder="Digite a senha"
+                maxlength="20"
+                required
+                autocomplete="new-password"
+              />
+              <button
+                type="button"
+                id="btnToggleSenha"
+                class="btn-toggle-senha"
+                title="Mostrar/Ocultar senha"
+              >
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="btnCancelar">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary" id="btnSalvar">
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de confirmação de exclusão -->
+    <div id="modalConfirmacao" class="modal" style="display: none">
+      <div class="modal-content modal-small">
+        <div class="modal-header">
+          <h2>⚠️ Confirmar Exclusão</h2>
+          <button class="modal-close" id="btnFecharConfirmacao">×</button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir esta senha?</p>
+          <p class="confirmacao-info">
+            <strong id="confirmacaoLoja"></strong><br />
+            CNPJ: <span id="confirmacaoCnpj"></span>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="btnCancelarExclusao">
+            Cancelar
+          </button>
+          <button class="btn-danger" id="btnConfirmarExclusao">Excluir</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="js/dtef.js"></script>
+  </body>
+</html>

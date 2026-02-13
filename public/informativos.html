@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Informativos - Intranet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/informativos.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <button
+          class="btn-voltar"
+          onclick="window.location.href='dashboard.html'"
+        >
+          <i class="fas fa-arrow-left"></i> Voltar
+        </button>
+        <h1>Gerenciar Informativos</h1>
+      </header>
+
+      <main class="main-content">
+        <div class="actions-bar">
+          <button id="btnNovoInformativo" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Novo Informativo
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Validade</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="informativosTableBody">
+              <tr>
+                <td colspan="5" class="loading">Carregando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalInformativo" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="modalTitle">Novo Informativo</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <form id="formInformativo">
+          <input type="hidden" id="informativoId" />
+
+          <div class="form-group">
+            <label for="titulo">Título *</label>
+            <input
+              type="text"
+              id="titulo"
+              required
+              maxlength="255"
+              placeholder="Digite o título do informativo"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição *</label>
+            <textarea
+              id="descricao"
+              required
+              rows="5"
+              placeholder="Digite a descrição completa do informativo"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="dtaValidade">Data de Validade</label>
+            <input
+              type="date"
+              id="dtaValidade"
+              placeholder="Deixe em branco para informativo sem data de expiração"
+            />
+            <small
+              >Se não informar, o informativo ficará visível
+              indefinidamente</small
+            >
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="btnCancelar" class="btn btn-secondary">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mensagem de feedback -->
+    <div id="mensagem" class="mensagem"></div>
+
+    <script src="js/informativos.js"></script>
+  </body>
+</html>
